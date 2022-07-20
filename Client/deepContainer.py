@@ -6,11 +6,10 @@ from datetime import datetime
 
 
 
-def deepspeechClient:
+def deepspeechClient(test_container,audio_file):
     client = docker.from_env()
 
-    container = client.containers.run("harbor.ops.veritone.com/challenges/deepspeech", " --audio audio1.wav",
-                                      detach=True)
+    container = client.containers.run(test_container, f'--audio  {audio_file}',detach=True)
 
 
 
@@ -40,9 +39,10 @@ def deepspeechClient:
     percentage = (CPUDelta / SystemDelta) * 100 * cpu_count
 
 
+    # I really don't know how I'm going to solve this getting runtime information on the container.
+    # i wonder if the container is stopped once the operation is done.
+    # if i can get that from the way that I get stats, I think it should be easy to get that
+    # need to track time too
 
-def check_deepSpeech_running:
 
-#I really don't know how I'm going to solve this.
-#i wonder if the container is stopped once the operation is done.
-#if i can get that from the way that I get stats, I think it should be easy to get that
+
