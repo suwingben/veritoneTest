@@ -1,0 +1,5 @@
+Tests:
+  Test1:
+    audio_file: "audio1.wav"
+    text_file : "audio1.txt"
+    container: "harbor.ops.veritone.com/challenges/deepspeech"

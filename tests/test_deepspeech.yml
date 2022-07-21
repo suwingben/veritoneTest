@@ -1,0 +1,6 @@
+test_deepspeech_transcription:
+    -
+        audio_file: "audio1.wav"
+        expected_phrase: "razu you must hurry you must stay the path"
+        test_container: "harbor.ops.veritone.com/challenges/deepspeech"
+
