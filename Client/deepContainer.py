@@ -3,15 +3,15 @@ import logging
 import subprocess
 from datetime import datetime
 
-
-
+test_log = logging.getLogger('test_logger')
+console_log = logging.getLogger('console')
 
 def deepspeechClient(audio_file,test_container):
     client = docker.from_env()
 
 
     startTime = datetime.now()
-    container = client.containers.run(test_container, f'--audio  {audio_file}','--cpus="1"',detach=True)
+    container = client.containers.run(test_container, f'--audio  {audio_file}','cpus=1',detach=True)
 
 
     cpu_stats = get_container_cpu_stats(container)
@@ -23,17 +23,14 @@ def deepspeechClient(audio_file,test_container):
 
     timeTaken = (endTime-startTime).total_seconds()
 
-    print(timeTaken)
-    print(cpu_stats)
+    console_log.debug(f'The time taken is: {timeTaken}')
+    console_log.debug(f'The the cpu percentage is: {cpu_stats}')
+    test_log.debug(f'The time taken is: {timeTaken}')
+    test_log.debug(f'The cpu percentage is: {cpu_stats}')
+
 
     return transcription
 
-
-
-    # I really don't know how I'm going to solve this getting runtime information on the container.
-    # i wonder if the container is stopped once the operation is done.
-    # if i can get that from the way that I get stats, I think it should be easy to get that
-    # need to track time too
 
 
 def get_container_cpu_stats(container):
@@ -45,11 +42,11 @@ def get_container_cpu_stats(container):
     container.reload()
 
     while container.attrs['State']['Running']:
-        stdout = subprocess.Popen(['docker', 'stats', '--no-stream', '--format', '{{.CPUPerc}}'], stdout=subprocess.PIPE).communicate()
+        percent = subprocess.Popen(['docker', 'stats', '--no-stream', '--format', '{{.CPUPerc}}'], stdout=subprocess.PIPE).communicate()
 
-        if stdout:
-            cpu = float(stdout[-2])
-            cpu_stats.append(cpu)
+        if percent:
+            percent_sanitized = str(percent[0],'utf-8').split('%',1)
+            cpu_stats.append(float(percent_sanitized[0]))
         container.reload()
 
 
