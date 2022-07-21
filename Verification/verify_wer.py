@@ -12,7 +12,6 @@ def verify_transcription_accuracy(expected_phrase,actual_phrase ):
 
 
 
-
     assert error_rate > minimum_percentage
 
     return error_rate

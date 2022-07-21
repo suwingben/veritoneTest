@@ -9,13 +9,22 @@ from datetime import datetime
 def deepspeechClient(audio_file,test_container):
     client = docker.from_env()
 
-    container = client.containers.run(test_container, f'--audio  {audio_file}',detach=True)
+
+    startTime = datetime.now()
+    container = client.containers.run(test_container, f'--audio  {audio_file}','--cpus="1"',detach=True)
 
 
+    cpu_stats = get_container_cpu_stats(container)
 
+
+    endTime = datetime.now()
     for line in container.logs(stream=True):
-        transcription = str(line.strip(),'utf-8')
+        transcription = str(line.strip(), 'utf-8')
 
+    timeTaken = (endTime-startTime).total_seconds()
+
+    print(timeTaken)
+    print(cpu_stats)
 
     return transcription
 
@@ -27,4 +36,21 @@ def deepspeechClient(audio_file,test_container):
     # need to track time too
 
 
+def get_container_cpu_stats(container):
 
+
+    cpu_stats = []
+
+
+    container.reload()
+
+    while container.attrs['State']['Running']:
+        stdout = subprocess.Popen(['docker', 'stats', '--no-stream', '--format', '{{.CPUPerc}}'], stdout=subprocess.PIPE).communicate()
+
+        if stdout:
+            cpu = float(stdout[-2])
+            cpu_stats.append(cpu)
+        container.reload()
+
+
+    return cpu_stats
