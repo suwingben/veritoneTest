@@ -24,6 +24,7 @@ if not os.path.exists(log_directory):
 def gather_the_logs(request):
 
     logger = logging.getLogger("test_data_log")
+    logger.handlers= [] #i think things have been caching
     logger.addHandler(logging.FileHandler(f"{log_path}/{request.node.callspec.params['audio_file']}.log"))
     logger.propagate = False
 
