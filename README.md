@@ -11,8 +11,8 @@ You'll need to already have python 3 and pip installed.
    1. ```python3 -m venv test_run_env```
 2. Activate your new virtual environment
    1. ```source test_run_env/bin/activate```
-3Install the required packages
-   2. ```pip install -r requirements.txt```
+3. Install the required packages
+   1. ```pip install -r requirements.txt```
 4. Call Pytest to run the tests
    1. ```pytest tests```
 5. Close it up when you'e all done.
