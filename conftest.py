@@ -7,7 +7,7 @@ import datetime
 
 LOG_FORMAT = (
     "%(asctime)s [%(levelname)s]: %(message)s in %(pathname)s:%(lineno)d")
-LOG_LEVEL = logging.INFO
+LOG_LEVEL = logging.DEBUG
 
 
 console_log = logging.getLogger('console')
@@ -15,7 +15,7 @@ console_log = logging.getLogger('console')
 
 @pytest.fixture()
 def test_logger():
-    test_log_file = "test.console_log"
+    test_log_file = "C:/Users/saint/PycharmProjects/veritoneTest/test.console_log"
 
     test_logger = logging.getLogger("test_logger")
     test_logger.setLevel(LOG_LEVEL)

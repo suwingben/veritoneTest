@@ -12,9 +12,9 @@ def deepspeechClient(audio_file,test_container):
 
     startTime = datetime.now()
     container = client.containers.run(test_container, f'--audio  {audio_file}','cpus=1',detach=True)
+    container_id = container.id
 
-
-    cpu_stats = get_container_cpu_stats(container)
+    cpu_stats = get_container_metadata(container,container_id,audio_file)
 
 
     endTime = datetime.now()
@@ -33,11 +33,15 @@ def deepspeechClient(audio_file,test_container):
 
 
 
-def get_container_cpu_stats(container):
+def get_container_cpu(container):
 
 
     cpu_stats = []
 
+    copy_file = subprocess.Popen(['docker', 'cp', f'{container_id}:/DeepSpeech/{audio_file}', f'C:/Users/saint/PycharmProjects/veritoneTest/{audio_file}'])
+
+    if copy_file:
+        asd = 1
 
     container.reload()
 
@@ -51,3 +55,6 @@ def get_container_cpu_stats(container):
 
 
     return cpu_stats
+
+
+def get_container:
